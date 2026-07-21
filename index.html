@@ -1,45 +1,1386 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SMART STOCK OPNAME</title>
-  <link rel="icon" href="https://drive.google.com/file/d/1RANjutHtsp3MsOrddis0gPnGfCIQDZUa/view?usp=sharing" />
-  <style>
-    html, body {
+﻿<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    /* ============================================================
+       SMART CYCLE COUNT â?? BLOGGER LANDING PAGE
+       ============================================================ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #eee;
-      overflow: hidden; /* Mencegah scroll ganda */
     }
 
-    .iframe-container {
+    :root {
+      --primary: #00A3FF;
+      --primary-dk: #0082cc;
+      --glow: rgba(0, 163, 255, .25);
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #050A18;
+      --card: #0d1b2a;
+      --card2: #111827;
+      --border: rgba(255, 255, 255, .08);
+      --text: #f1f5f9;
+      --muted: #64748b;
+      --dim: #94a3b8;
+      --radius: 18px;
+      --tr: 0.25s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    #scc-app {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .5;
+      }
+    }
+
+    @keyframes orbFlt {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(20px, -15px) scale(1.05);
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, .12);
+      border-radius: 3px;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(5, 10, 24, .88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .kde-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+      padding: 5px 8px;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, .25);
+    }
+
+    .kde-letters {
+      display: flex;
+      align-items: stretch;
+      font-family: 'Arial Black', Impact, sans-serif;
+      line-height: 1;
+    }
+
+    .kde-k {
+      background: #E60000;
+      border-radius: 14px 0 0 14px;
+      padding: 2px 10px 2px 13px;
+      color: #FFFF00;
+      font-size: 22px;
+      letter-spacing: -1.5px;
+    }
+
+    .kde-de {
+      color: #009900;
+      font-size: 22px;
+      padding: 2px 3px;
+      letter-spacing: -.5px;
+    }
+
+    .nav-brand-text {
+      font-size: 15px;
+      font-weight: 800;
+      color: white;
+    }
+
+    .nav-brand-sub {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dk));
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 50px;
+      box-shadow: 0 4px 18px var(--glow);
+      transition: transform var(--tr), box-shadow var(--tr);
+      white-space: nowrap;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px var(--glow);
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 24px 60px;
+      text-align: center;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+    }
+
+    .orb1 {
+      width: 500px;
+      height: 500px;
+      background: var(--primary);
+      opacity: .07;
+      top: -150px;
+      right: -100px;
+      animation: orbFlt 8s ease-in-out infinite;
+    }
+
+    .orb2 {
+      width: 350px;
+      height: 350px;
+      background: #7c3aed;
+      opacity: .06;
+      bottom: 0;
+      left: -100px;
+      animation: orbFlt 10s ease-in-out infinite reverse;
+    }
+
+    .orb3 {
+      width: 250px;
+      height: 250px;
+      background: #10b981;
+      opacity: .05;
+      top: 40%;
+      right: 5%;
+      animation: orbFlt 12s ease-in-out infinite 3s;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(0, 163, 255, .04) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 163, 255, .04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 163, 255, .1);
+      border: 1px solid rgba(0, 163, 255, .25);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 24px;
+      animation: fadeUp .6s ease both;
+    }
+
+    .hero-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: pulse 2s ease infinite;
+    }
+
+    .hero-title {
+      font-size: clamp(32px, 6vw, 68px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      color: white;
+      animation: fadeUp .7s .1s ease both;
+    }
+
+    .hero-title .accent {
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      max-width: 600px;
+      margin: 20px auto 0;
+      font-size: clamp(15px, 2.5vw, 18px);
+      font-weight: 500;
+      color: var(--dim);
+      line-height: 1.7;
+      animation: fadeUp .7s .2s ease both;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      margin-top: 36px;
+      animation: fadeUp .7s .3s ease both;
+    }
+
+    .btn-primary-lg {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dk));
+      color: white;
+      font-size: 15px;
+      font-weight: 800;
+      padding: 16px 32px;
+      border-radius: 50px;
+      box-shadow: 0 8px 30px var(--glow);
+      transition: transform var(--tr), box-shadow var(--tr);
+    }
+
+    .btn-primary-lg:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 40px var(--glow);
+    }
+
+    .btn-primary-lg:active {
+      transform: scale(.97);
+    }
+
+    .btn-ghost-lg {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid var(--border);
+      color: var(--dim);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 16px 28px;
+      border-radius: 50px;
+      transition: var(--tr);
+    }
+
+    .btn-ghost-lg:hover {
+      background: rgba(255, 255, 255, .1);
+      color: white;
+    }
+
+    /* Preview mockup */
+    .hero-preview {
+      position: relative;
+      margin-top: 60px;
+      animation: fadeUp .8s .4s ease both;
       width: 100%;
-      height: 100dvh; /* Menggunakan dvh agar pas di mobile browser */
+      max-width: 900px;
+    }
+
+    .preview-frame {
+      background: var(--card);
+      border: 1px solid rgba(0, 163, 255, .2);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .04), 0 0 60px var(--glow);
+      position: relative;
       overflow: hidden;
     }
 
-    iframe {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border: none;
+    .preview-topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 14px;
     }
-  </style>
-</head>
-<body>
-  <div class="iframe-container">
-    <iframe
-      id="app"
-      src="https://script.google.com/macros/s/AKfycbwoUjF_2QZwI5EzkQ91vXRTVsfPYht-pRGezWVuaakl1dHJBQ4WKOzQ83WH2jHF0HugBA/exec"
-      scrolling="yes"
-      allowfullscreen="true"
-      webkitallowfullscreen="true"
-      mozallowfullscreen="true"
-      allow="fullscreen; camera; microphone; display-capture; geolocation;">
-    </iframe>
+
+    .topbar-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .dot-r {
+      background: #ef4444;
+    }
+
+    .dot-y {
+      background: #f59e0b;
+    }
+
+    .dot-g {
+      background: #10b981;
+    }
+
+    .topbar-title {
+      margin-left: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dim);
+    }
+
+    .preview-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .preview-stat {
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 10px;
+      text-align: center;
+    }
+
+    .preview-stat-val {
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .preview-stat-lbl {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-top: 2px;
+    }
+
+    .v-blue {
+      color: var(--primary);
+    }
+
+    .v-green {
+      color: var(--success);
+    }
+
+    .v-red {
+      color: var(--danger);
+    }
+
+    .v-orange {
+      color: var(--warning);
+    }
+
+    .preview-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .preview-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, .02);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      border-left-width: 3px;
+      border-left-style: solid;
+    }
+
+    .preview-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .preview-item-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .preview-item-sku {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .preview-variance {
+      margin-left: auto;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    /* SECTIONS */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: 900;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--dim);
+      line-height: 1.7;
+      max-width: 560px;
+      margin-top: 12px;
+    }
+
+    .divider-line {
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* FEATURES */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-top: 48px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      transition: transform var(--tr), border-color var(--tr), box-shadow var(--tr);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 163, 255, .25);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .4);
+    }
+
+    .feat-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 18px;
+    }
+
+    .feat-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .feat-desc {
+      font-size: 13px;
+      color: var(--dim);
+      line-height: 1.6;
+    }
+
+    /* HOW IT WORKS */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .step-card {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      transition: transform var(--tr);
+    }
+
+    .step-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .step-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      color: white;
+      font-size: 18px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 16px var(--glow);
+    }
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: var(--dim);
+      line-height: 1.6;
+    }
+
+    /* STATS BANNER */
+    .stats-banner {
+      background: linear-gradient(135deg, #0d1b2a, #111827);
+      border: 1px solid rgba(0, 163, 255, .15);
+      border-radius: 24px;
+      padding: 48px 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 32px;
+      text-align: center;
+      margin: 60px 0;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(0, 163, 255, .05);
+    }
+
+    .stat-num {
+      font-size: 42px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* COMPARISON */
+    .compare-wrap {
+      overflow-x: auto;
+      margin-top: 40px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      min-width: 520px;
+    }
+
+    .compare-table th {
+      padding: 16px 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      background: rgba(255, 255, 255, .02);
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .compare-table th.hl {
+      background: rgba(0, 163, 255, .08);
+      color: var(--primary);
+    }
+
+    .compare-table td {
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, .04);
+      color: var(--text);
+    }
+
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .compare-table tr:hover td {
+      background: rgba(255, 255, 255, .02);
+    }
+
+    .compare-table td.hl {
+      background: rgba(0, 163, 255, .04);
+    }
+
+    .chk {
+      color: var(--success);
+      font-size: 18px;
+    }
+
+    .crs {
+      color: var(--danger);
+      font-size: 18px;
+    }
+
+    .prt {
+      color: var(--warning);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-top: 40px;
+    }
+
+    .testimonial-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: transform var(--tr);
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .stars {
+      color: #f59e0b;
+      font-size: 16px;
+      margin-bottom: 14px;
+      letter-spacing: 2px;
+    }
+
+    .testimonial-text {
+      font-size: 14px;
+      color: var(--dim);
+      line-height: 1.7;
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .author-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .author-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .author-role {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, #0a1628, #0d1b2a);
+      border: 1px solid rgba(0, 163, 255, .15);
+      border-radius: 28px;
+      padding: 64px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin: 20px 0 80px;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(0, 163, 255, .07), transparent);
+    }
+
+    .cta-title {
+      font-size: clamp(24px, 4vw, 40px);
+      font-weight: 900;
+      color: white;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-sub {
+      font-size: 16px;
+      color: var(--dim);
+      margin-top: 12px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .footer-link {
+      color: var(--dim);
+      font-weight: 600;
+      transition: color var(--tr);
+    }
+
+    .footer-link:hover {
+      color: var(--primary);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width:768px) {
+      .navbar {
+        padding: 0 16px;
+      }
+
+      .nav-brand-sub {
+        display: none;
+      }
+
+      .nav-cta {
+        padding: 9px 16px;
+        font-size: 12px;
+      }
+
+      .hero {
+        padding: 90px 20px 50px;
+      }
+
+      .preview-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .section {
+        padding: 60px 20px;
+      }
+
+      .stats-banner {
+        padding: 32px 24px;
+      }
+
+      .cta-section {
+        padding: 44px 24px;
+        border-radius: 20px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width:480px) {
+
+      .hero-btns,
+      .cta-btns {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-primary-lg,
+      .btn-ghost-lg {
+        justify-content: center;
+      }
+    }
+
+    /* === BLOGGER SCROLL FIX === */
+    #scc-app {
+      position: relative;
+      overflow-x: clip;
+    }
+
+    /* Navbar: sticky agar tidak mengunci scroll Blogger */
+
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+
+<div id="scc-app">
+
+
+  <!-- â??â?? NAVBAR â??â?? -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="kde-badge">
+        <div class="kde-letters">
+          <div class="kde-k">K</div>
+          <div class="kde-de">DE</div>
+        </div>
+      </div>
+      <div>
+        <div class="nav-brand-text">Smart Cycle Count</div>
+        <div class="nav-brand-sub">KDE Pharmaceutical</div>
+      </div>
+    </div>
+    <a href="#cta" class="nav-cta">&#128640; Coba Gratis</a>
+  </nav>
+
+  <!-- â??â?? HERO â??â?? -->
+  <section class="hero">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="hero-grid"></div>
+
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Google Sheets &amp; Apps Script &#8212; Gratis &amp; Open Source
+    </div>
+
+    <h1 class="hero-title">
+      Audit Stok Gudang<br />
+      <span class="accent">Lebih Cepat &amp; Akurat</span>
+    </h1>
+
+    <p class="hero-sub">
+      Smart Cycle Count mengubah proses opname manual yang lambat menjadi sistem digital berbasis Google Sheets &#8212;
+      tanpa biaya server, tanpa install aplikasi.
+    </p>
+
+    <div class="hero-btns">
+      <a href="#cta" class="btn-primary-lg">&#128640; Mulai Sekarang &#8212; Gratis</a>
+      <a href="#fitur" class="btn-ghost-lg">&#128214; Lihat Fitur</a>
+    </div>
+
+    <!-- App Preview -->
+    <div class="hero-preview" style="animation:fadeUp .8s .4s ease both;">
+      <div class="preview-frame">
+        <div class="preview-topbar">
+          <div class="topbar-dot dot-r"></div>
+          <div class="topbar-dot dot-y"></div>
+          <div class="topbar-dot dot-g"></div>
+          <span class="topbar-title">&#128230; Dashboard &#8211; Smart Stock Opname</span>
+        </div>
+        <div class="preview-stats">
+          <div class="preview-stat">
+            <div class="preview-stat-val v-blue">248</div>
+            <div class="preview-stat-lbl">Diaudit</div>
+          </div>
+          <div class="preview-stat">
+            <div class="preview-stat-val v-green">96.4%</div>
+            <div class="preview-stat-lbl">Akurasi</div>
+          </div>
+          <div class="preview-stat">
+            <div class="preview-stat-val v-red">7</div>
+            <div class="preview-stat-lbl">Shortage</div>
+          </div>
+          <div class="preview-stat">
+            <div class="preview-stat-val v-orange">2</div>
+            <div class="preview-stat-lbl">Surplus</div>
+          </div>
+        </div>
+        <div class="preview-rows">
+          <div class="preview-row" style="border-color:#ef4444;">
+            <div class="preview-icon" style="background:rgba(239,68,68,.1);">&#128201;</div>
+            <div>
+              <div class="preview-item-name">Amoxicillin 500mg Caps</div>
+              <div class="preview-item-sku">SKU-0041 &#8226; Antibiotik &#8226; 3 lokasi</div>
+            </div>
+            <div class="preview-variance" style="color:#ef4444;">&#8722;12</div>
+          </div>
+          <div class="preview-row" style="border-color:#10b981;">
+            <div class="preview-icon" style="background:rgba(16,185,129,.1);">&#9989;</div>
+            <div>
+              <div class="preview-item-name">Paracetamol 500mg Tab</div>
+              <div class="preview-item-sku">SKU-0015 &#8226; Analgesik &#8226; 5 lokasi</div>
+            </div>
+            <div class="preview-variance" style="color:#10b981;">= 0</div>
+          </div>
+          <div class="preview-row" style="border-color:#00A3FF;">
+            <div class="preview-icon" style="background:rgba(0,163,255,.1);">&#128200;</div>
+            <div>
+              <div class="preview-item-name">Vitamin C 1000mg Eff</div>
+              <div class="preview-item-sku">SKU-0089 &#8226; Vitamin &#8226; 2 lokasi</div>
+            </div>
+            <div class="preview-variance" style="color:#00A3FF;">+5</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- â??â?? STATS â??â?? -->
+  <div class="section" style="padding-top:60px;padding-bottom:0;">
+    <div class="stats-banner">
+      <div>
+        <div class="stat-num">10&#215;</div>
+        <div class="stat-label">Lebih Cepat dari Manual</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Berbasis Google Sheets</div>
+      </div>
+      <div>
+        <div class="stat-num">0 Rp</div>
+        <div class="stat-label">Biaya Berlangganan</div>
+      </div>
+      <div>
+        <div class="stat-num">&#8734;</div>
+        <div class="stat-label">Data Tersimpan Aman</div>
+      </div>
+    </div>
   </div>
-</body>
-</html>
+
+  <!-- â??â?? FITUR â??â?? -->
+  <section id="fitur" class="section">
+    <div class="section-label">&#10024; Fitur Unggulan</div>
+    <h2 class="section-title">Semua yang Anda Butuhkan<br />untuk Audit Stok</h2>
+    <p class="section-desc">Dirancang khusus untuk tim gudang farmasi &#8211; tapi bisa dipakai di industri apa saja.
+    </p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(0,163,255,.12);">&#128269;</div>
+        <div class="feat-title">Scan Barcode Real-time</div>
+        <div class="feat-desc">Gunakan kamera smartphone untuk scan barcode produk dan QR code lokasi rak secara
+          otomatis &#8211; tanpa scanner tambahan.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(16,185,129,.12);">&#128202;</div>
+        <div class="feat-title">Dashboard Analitik Langsung</div>
+        <div class="feat-desc">Lihat statistik akurasi, total shortage, surplus, dan net variance secara real-time
+          langsung dari Google Sheets.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(124,58,237,.12);">&#128247;</div>
+        <div class="feat-title">Foto Bukti Otomatis</div>
+        <div class="feat-desc">Ambil foto bukti stok langsung dari aplikasi &#8211; foto tersimpan ke Google Drive dan
+          terlampir di laporan secara otomatis.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(245,158,11,.12);">&#128101;</div>
+        <div class="feat-title">Multi-User &amp; Role</div>
+        <div class="feat-desc">Dukung banyak pengguna sekaligus dengan sistem login berbasis token. Admin kelola akun
+          langsung dari Google Sheets.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(239,68,68,.12);">&#128241;</div>
+        <div class="feat-title">Mobile-First Design</div>
+        <div class="feat-desc">Antarmuka dioptimalkan untuk HP Android &amp; iPhone. Bisa dipakai di lapangan tanpa
+          perlu laptop.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(6,182,212,.12);">&#11015;&#65039;</div>
+        <div class="feat-title">Export Laporan Excel/CSV</div>
+        <div class="feat-desc">Ekspor hasil audit ke format CSV satu klik. Siap dilaporkan ke manajemen atau diimpor ke
+          sistem ERP.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(16,185,129,.12);">&#128205;</div>
+        <div class="feat-title">Tracking Lokasi Rak</div>
+        <div class="feat-desc">Catat lokasi rak/bin secara spesifik untuk setiap item. Identifikasi perbedaan stok per
+          lokasi dengan mudah.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(0,163,255,.12);">&#128221;</div>
+        <div class="feat-title">Activity Log Lengkap</div>
+        <div class="feat-desc">Setiap transaksi audit dicatat dengan timestamp, nama petugas, dan detail perubahan
+          &#8211; audit trail yang akurat.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(124,58,237,.12);">&#128276;</div>
+        <div class="feat-title">Alert Selisih Otomatis</div>
+        <div class="feat-desc">Sistem meminta foto bukti jika selisih lebih dari 10%. Tidak ada manipulasi data tanpa
+          bukti fisik.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- â??â?? CARA KERJA â??â?? -->
+  <section id="cara-kerja" class="section">
+    <div class="section-label">&#9881;&#65039; Cara Kerja</div>
+    <h2 class="section-title">4 Langkah Mudah<br />Mulai Audit Digital</h2>
+    <p class="section-desc">Tidak perlu install software. Tidak perlu server. Cukup Google Account.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-title">Copy Google Spreadsheet</div>
+        <div class="step-desc">Buat salinan template Google Sheets yang sudah disiapkan ke Google Drive Anda. Semua data
+          tersimpan di sana.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-title">Deploy Apps Script</div>
+        <div class="step-desc">Buka Apps Script di dalam Sheet, klik Deploy sebagai Web App. Dapatkan URL aplikasi unik
+          Anda dalam 2 menit.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-title">Input Data Master</div>
+        <div class="step-desc">Isi daftar barang di tab Master Data. Tambahkan akun user tim gudang di tab Users. Sistem
+          siap dipakai.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-title">Mulai Audit!</div>
+        <div class="step-desc">Buka URL di HP tim gudang, login, dan mulai scan &amp; hitung stok. Hasilnya langsung
+          masuk ke Dashboard.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- â??â?? PERBANDINGAN â??â?? -->
+  <section id="perbandingan" class="section">
+    <div class="section-label">&#128202; Perbandingan</div>
+    <h2 class="section-title">Smart Cycle Count vs<br />Metode Tradisional</h2>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Fitur / Kriteria</th>
+            <th class="hl">&#9989; Smart Cycle Count</th>
+            <th>&#128203; Manual (Kertas)</th>
+            <th>&#128176; Software ERP Berbayar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Biaya</td>
+            <td class="hl"><span class="chk">&#9989;</span> Gratis selamanya</td>
+            <td><span class="prt">Biaya cetak &amp; SDM</span></td>
+            <td><span class="crs">&#10060;</span> Jutaan/bulan</td>
+          </tr>
+          <tr>
+            <td>Akses dari HP</td>
+            <td class="hl"><span class="chk">&#9989;</span> Ya, optimal</td>
+            <td><span class="crs">&#10060;</span> Tidak</td>
+            <td><span class="prt">&#9888;&#65039; Perlu install app</span></td>
+          </tr>
+          <tr>
+            <td>Scan Barcode</td>
+            <td class="hl"><span class="chk">&#9989;</span> Kamera HP</td>
+            <td><span class="crs">&#10060;</span> Tidak ada</td>
+            <td><span class="chk">&#9989;</span> Scanner khusus</td>
+          </tr>
+          <tr>
+            <td>Laporan real-time</td>
+            <td class="hl"><span class="chk">&#9989;</span> Instan</td>
+            <td><span class="crs">&#10060;</span> Setelah rekap manual</td>
+            <td><span class="chk">&#9989;</span> Ya</td>
+          </tr>
+          <tr>
+            <td>Foto Bukti</td>
+            <td class="hl"><span class="chk">&#9989;</span> Google Drive</td>
+            <td><span class="crs">&#10060;</span> Tidak ada</td>
+            <td><span class="prt">&#9888;&#65039; Tergantung vendor</span></td>
+          </tr>
+          <tr>
+            <td>Kustomisasi</td>
+            <td class="hl"><span class="chk">&#9989;</span> Open source</td>
+            <td><span class="chk">&#9989;</span> Bebas</td>
+            <td><span class="crs">&#10060;</span> Terbatas</td>
+          </tr>
+          <tr>
+            <td>Server &amp; Maintenance</td>
+            <td class="hl"><span class="chk">&#9989;</span> Google urus semua</td>
+            <td><span class="chk">&#9989;</span> Tidak perlu</td>
+            <td><span class="crs">&#10060;</span> Perlu IT &amp; server</td>
+          </tr>
+          <tr>
+            <td>Waktu Setup</td>
+            <td class="hl"><span class="chk">&#9989;</span> &lt; 5 menit</td>
+            <td><span class="chk">&#9989;</span> Langsung</td>
+            <td><span class="crs">&#10060;</span> Berminggu-minggu</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- â??â?? TESTIMONI â??â?? -->
+  <section id="testimoni" class="section">
+    <div class="section-label">&#128172; Testimoni</div>
+    <h2 class="section-title">Dipercaya oleh Tim Gudang</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="testimonial-text">&#8220;Dulu opname bisa makan 3 hari untuk 500 item. Sekarang dengan Smart Cycle
+          Count bisa selesai dalam 1 hari. Luar biasa!&#8221;</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:rgba(0,163,255,.15);">&#128084;</div>
+          <div>
+            <div class="author-name">Budi Santoso</div>
+            <div class="author-role">Kepala Gudang &#8211; PT Farma Maju</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="testimonial-text">&#8220;Fitur foto bukti sangat membantu. Tim tidak bisa lagi main-main dengan angka
+          karena semua ada bukti fotonya.&#8221;</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:rgba(16,185,129,.15);">&#128105;&#8205;&#9877;&#65039;</div>
+          <div>
+            <div class="author-name">Sari Dewi</div>
+            <div class="author-role">Apoteker &#8211; Apotek Sehat Bersama</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="testimonial-text">&#8220;Gratis tapi kualitasnya setara software berbayar. Setup-nya mudah, dalam 10
+          menit langsung bisa dipakai tim.&#8221;</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:rgba(124,58,237,.15);">&#128104;&#8205;&#128187;</div>
+          <div>
+            <div class="author-name">Hendra Wijaya</div>
+            <div class="author-role">IT Manager &#8211; Distributor Alkes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- â??â?? CTA â??â?? -->
+  <div class="section" style="padding-top:0;">
+    <div class="cta-section" id="cta">
+      <h2 class="cta-title">Siap Mulai Audit Digital?</h2>
+      <p class="cta-sub">
+        Gratis selamanya. Tidak perlu kartu kredit.<br />
+        Butuh Google Account saja. Setup &lt; 5 menit.
+      </p>
+      <div class="cta-btns">
+        <a href="https://script.google.com/macros/s/AKfycbzMbvQqMWqxVifIjHNJuY-ibDJF3jgkjWxLG3rFjWf3ptdJr7m_Tq9n2vuofIo-exlrcQ/exec"
+          target="_blank" rel="noopener" class="btn-primary-lg">
+          &#128640; Buka Aplikasi Sekarang
+        </a>
+        <a href="https://github.com/" target="_blank" rel="noopener" class="btn-ghost-lg">
+          &#128194; Source Code GitHub
+        </a>
+      </div>
+      <p class="cta-note">Powered by Google Apps Script &amp; Google Sheets &#8226; Dibuat oleh KDE Pharmaceutical IT
+        Team</p>
+    </div>
+  </div>
+
+  <!-- â??â?? FOOTER â??â?? -->
+  <footer class="footer">
+    <div class="footer-logo">
+      <div class="kde-badge" style="transform:scale(.8);">
+        <div class="kde-letters">
+          <div class="kde-k">K</div>
+          <div class="kde-de">DE</div>
+        </div>
+      </div>
+      <span style="font-weight:800;color:white;">Smart Cycle Count</span>
+    </div>
+    <div class="footer-links">
+      <a href="#fitur" class="footer-link">Fitur</a>
+      <a href="#cara-kerja" class="footer-link">Cara Kerja</a>
+      <a href="#perbandingan" class="footer-link">Perbandingan</a>
+      <a href="#testimoni" class="footer-link">Testimoni</a>
+      <a href="#cta" class="footer-link">Download</a>
+    </div>
+    <div class="footer-copy">
+      &#169; 2025 KDE Pharmaceutical &#8226; Smart Cycle Count v2.1 &#8226; Google Apps Script Edition<br />
+      <span style="font-size:11px;">Dibuat dengan &#10084;&#65039; untuk tim gudang Indonesia</span>
+    </div>
+  </footer>
+
+  <script>
+    // Animate on scroll
+    (function () {
+      if (!('IntersectionObserver' in window)) return;
+      var targets = document.querySelectorAll('.feature-card,.step-card,.testimonial-card,.stats-banner,.preview-stat');
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.animation = 'fadeUp .6s ease both';
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      targets.forEach(function (el) { el.style.opacity = '0'; obs.observe(el); });
+    })();
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var t = document.querySelector(this.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+  </script>
+
+
+</div>
+
